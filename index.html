@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Тез татым | Ашкана POS</title>
+    
+    <!-- Иконка и подключение файла стилей -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="interaction/style.css">
+    
+    <!-- PWA Настройки -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1d24">
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Spectral+SC:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="topbar">
+    <h1>Тез татым <span>|</span> URI <span>|</span> Ашкана</h1>
+    <div class="terminal-status">
+      <span class="dot" id="connection-dot"></span> 
+      <span id="connection-text">Загрузка меню...</span>
+    </div>
+  </header>
+
+  <main class="pos-layout">
+    
+    <section id="menu" class="menu-section">
+      <div class="menu-header">
+        <h2>Категории меню</h2>
+      </div>
+      <div class="menu-grid" id="menu-container"></div>
+      <footer class="developer-credits">
+        <span>© <span id="current-year"></span> Контр Гамбит</span>
+        <span class="version-badge">Version 1.0.0</span>
+      </footer>
+    </section>
+
+    <section id="order" class="order-sidebar">
+      <div class="order-header">
+        <h2>Текущий чек</h2>
+        <span class="order-id" id="order-id-display">#----</span>
+      </div>
+      <div id="order-list" class="order-items-container"></div>
+      <div class="order-footer">
+        <div class="total-row">
+          <span>Итого к оплате:</span>
+          <p><span id="total">0</span> <small><span class="som-symbol">С</span></small></p>
+        </div>
+        <div class="order-actions">
+          <button id="clear-order" class="btn-danger">Очистить всё</button>
+          <button id="addOrderToTable" class="btn-warning">В резерв (стол)</button>
+          <button id="show-qr-btn" class="btn-qr">Показать QR</button>
+          <button id="online-order-btn" class="btn-whatsapp">Онлайн-заказ</button>
+          <button id="placeAnOrder" class="btn-primary">Оплатить заказ</button>
+        </div>
+      </div>
+      <div id="fullscreen-confirmation">Заказ успешно оформлен</div>
+      <div id="confetti-container"></div>
+    </section>
+
+    <div id="qr-modal" class="modal-hidden">
+      <div class="modal-content">
+        <span class="close-qr">&times;</span>
+        <img src="img/qr-poster.png" alt="Оплата по QR">
+      </div>
+    </div>
+
+    <div id="wa-modal" class="modal-hidden">
+      <div class="modal-content wa-content">
+        <span class="close-wa">&times;</span>
+        <h2 style="margin-top: 0; color: var(--accent-gold); font-size: 22px;">WhatsApp Заказ</h2>
+        <div id="wa-order-info" class="wa-info-box"></div>
+        <div class="wa-input-group">
+          <label for="wa-address">Адрес доставки:</label>
+          <input type="text" id="wa-address" placeholder="Город, улица, дом, кв...">
+        </div>
+        <div class="wa-input-group">
+          <label for="wa-phone">Номер клиента:</label>
+          <input type="text" id="wa-phone" placeholder="996XXXXXXXXX" maxlength="12">
+        </div>
+        <button id="wa-send-btn" class="btn-whatsapp" style="width: 100%; margin-top: 12px; padding: 14px;">Отправить заказ в WhatsApp</button>
+        <div id="wa-qr-container" style="display: none; text-align: center; margin-top: 24px;">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">QR-код для перевода (картинка):</p>
+          <img id="wa-qr-img" src="" alt="QR-код заказа" style="max-width: 160px; border-radius: 8px; border: 2px solid var(--accent-gold);">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="interaction/script.js"></script>
+  
+  <!-- Регистрация Service Worker для PWA (Убирает логотип Chrome) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        // Указываем абсолютный путь, чтобы избежать ошибки 404 на GitHub Pages
+        navigator.serviceWorker.register('/KRAO/sw.js').then(reg => {
+          console.log('SW зарегистрирован: ', reg.scope);
+        }).catch(err => {
+          console.log('SW ошибка регистрации: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
