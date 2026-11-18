@@ -44,9 +44,11 @@ body {
 .topbar h1 span { color: var(--text-muted); margin: 0 8px; }
 .terminal-status { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
 
+/* ИСПРАВЛЕНИЕ 1: Запрещаем сжимать круглый индикатор статуса */
 .dot {
   width: 8px; height: 8px; background-color: #ffca28; border-radius: 50%;
   box-shadow: 0 0 8px rgba(255, 202, 40, 0.5); transition: background-color 0.3s, box-shadow 0.3s;
+  flex-shrink: 0; 
 }
 
 .pos-layout { display: flex; flex: 1; overflow: hidden; position: relative; }
@@ -147,7 +149,8 @@ body {
 #qr-modal.show, #wa-modal.show { opacity: 1; pointer-events: auto; }
 
 .modal-content { position: relative; max-width: 90%; max-height: 90%; animation: scaleUp 0.3s ease-out; }
-.modal-content img { max-height: 85vh; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+/* ИСПРАВЛЕНИЕ 2: Сохраняем пропорции QR-кода на мобильных устройствах, предотвращая искажения */
+.modal-content img { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
 .close-qr, .close-wa { position: absolute; top: -40px; right: -10px; font-size: 40px; color: #fff; cursor: pointer; transition: color 0.2s; line-height: 1; }
 .close-qr:hover, .close-wa:hover { color: var(--accent-gold); }
 
